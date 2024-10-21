@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import com.example.data.tables.ChannelTable
+import com.example.data.tables.ChannelsTable
 import com.example.domain.model.ChannelDTO
 import com.example.domain.repository.ChannelRepository
 import com.example.plugins.dbQuery
@@ -14,25 +14,25 @@ class ChannelRepositoryImpl : ChannelRepository {
 
     override suspend fun findAll(): List<ChannelDTO> {
         return dbQuery {
-            ChannelTable.selectAll().map(ResultRow::toChannelDTO)
+            ChannelsTable.selectAll().map(ResultRow::toChannelDTO)
         }
     }
 
     override suspend fun findByUid(uid: Long): ChannelDTO? {
         return dbQuery {
-            ChannelTable.selectAll().where { ChannelTable.uid.eq(uid) }.singleOrNull()?.toChannelDTO()
+            ChannelsTable.selectAll().where { ChannelsTable.uid.eq(uid) }.singleOrNull()?.toChannelDTO()
         }
     }
 
     override suspend fun findByOwner(ownerUid: Long): List<ChannelDTO> {
         return dbQuery {
-            ChannelTable.selectAll().where { ChannelTable.ownerUid.eq(ownerUid) }.map(ResultRow::toChannelDTO)
+            ChannelsTable.selectAll().where { ChannelsTable.ownerUid.eq(ownerUid) }.map(ResultRow::toChannelDTO)
         }
     }
 
     override suspend fun create(channel: ChannelDTO): ChannelDTO? {
         return dbQuery {
-            ChannelTable.insertReturning { table ->
+            ChannelsTable.insertReturning { table ->
                 table[uid] = channel.uid
                 table[title] = channel.title
                 table[description] = channel.description
@@ -46,7 +46,7 @@ class ChannelRepositoryImpl : ChannelRepository {
 
     override suspend fun delete(uid: Long): Boolean {
         return dbQuery {
-            ChannelTable.deleteWhere { ChannelTable.uid.eq(uid) } == 1
+            ChannelsTable.deleteWhere { ChannelsTable.uid.eq(uid) } == 1
         }
     }
 
@@ -54,13 +54,13 @@ class ChannelRepositoryImpl : ChannelRepository {
 
 private fun ResultRow.toChannelDTO(): ChannelDTO {
     return ChannelDTO(
-        uid = this[ChannelTable.uid],
-        title = this[ChannelTable.title],
-        description = this[ChannelTable.description],
-        username = this[ChannelTable.username],
-        image = this[ChannelTable.image],
-        inviteLink = this[ChannelTable.inviteLink],
-        ownerUid = this[ChannelTable.ownerUid]
+        uid = this[ChannelsTable.uid],
+        title = this[ChannelsTable.title],
+        description = this[ChannelsTable.description],
+        username = this[ChannelsTable.username],
+        image = this[ChannelsTable.image],
+        inviteLink = this[ChannelsTable.inviteLink],
+        ownerUid = this[ChannelsTable.ownerUid]
     )
 }
 

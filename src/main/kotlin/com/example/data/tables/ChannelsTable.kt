@@ -1,11 +1,10 @@
 package com.example.data.tables
 
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNotNull
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
-object ChannelTable : Table("channels") {
+object ChannelsTable : Table("channels") {
     val uid = long("uid").uniqueIndex()
     val title = varchar("title", 50)
     val description = varchar("description", 250).nullable()

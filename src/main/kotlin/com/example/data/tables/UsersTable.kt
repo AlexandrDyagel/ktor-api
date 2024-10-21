@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
-object UserTable: Table("users") {
+object UsersTable: Table("users") {
     val uid = long("uid").uniqueIndex()
     val firstName = varchar("first_name", 50)
     val lastName = varchar("last_name", 50).nullable()

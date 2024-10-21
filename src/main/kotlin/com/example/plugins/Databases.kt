@@ -1,7 +1,9 @@
 package com.example.plugins
 
-import com.example.data.tables.ChannelTable
-import com.example.data.tables.UserTable
+import com.example.data.tables.AccountsTable
+import com.example.data.tables.ChannelsTable
+import com.example.data.tables.TransactionsTable
+import com.example.data.tables.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -17,7 +19,7 @@ fun Application.configureDatabases() /* = with(environment.config) */ {
 
     transaction(dataSource) {
         SchemaUtils.create(
-            UserTable, ChannelTable
+            UsersTable, ChannelsTable, AccountsTable, TransactionsTable
         )
     }
 }
