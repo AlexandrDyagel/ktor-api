@@ -36,6 +36,9 @@ fun Application.configureRouting() {
         status(HttpStatusCode.BadRequest) { call, status ->
             call.respondText(text = "$status", status = HttpStatusCode.BadRequest)
         }
+        /*status(HttpStatusCode.InternalServerError) { call, status ->
+            call.respondText(text = "$status", status = HttpStatusCode.InternalServerError)
+        }*/
         exception<Throwable> { call, cause ->
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }

@@ -30,13 +30,14 @@ class UserRepositoryImpl: UserRepository {
             UserTable.deleteWhere { UserTable.uid.eq(uid) } == 1
         }
     }
-
-    private fun ResultRow.toUserDTO(): UserDTO =
-        UserDTO(
-            uid = this[UserTable.uid],
-            firstName = this[UserTable.firstName],
-            lastName = this[UserTable.lastName],
-            username = this[UserTable.username],
-        )
-
 }
+
+private fun ResultRow.toUserDTO(): UserDTO {
+    return UserDTO(
+        uid = this[UserTable.uid],
+        firstName = this[UserTable.firstName],
+        lastName = this[UserTable.lastName],
+        username = this[UserTable.username],
+    )
+}
+

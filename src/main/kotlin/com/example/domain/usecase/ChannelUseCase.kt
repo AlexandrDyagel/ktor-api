@@ -14,7 +14,7 @@ class ChannelUseCase(
         return repository.findByUid(uid)
     }
 
-    suspend fun findChannelByOwner(ownerUid: Long): ChannelDTO? {
+    suspend fun findChannelsByOwner(ownerUid: Long): List<ChannelDTO> {
         return repository.findByOwner(ownerUid)
     }
 

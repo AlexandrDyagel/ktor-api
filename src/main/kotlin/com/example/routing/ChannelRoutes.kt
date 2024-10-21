@@ -7,9 +7,9 @@ import com.example.resource.Channels
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.resources.*
+import io.ktor.server.resources.post
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.routing.post
 
 fun Route.channelRouting(
     channelRepository: ChannelRepository
@@ -21,27 +21,32 @@ fun Route.channelRouting(
         call.respond(channels)
     }
     get<Channels.Uid> {
-            val channel = channelUseCase.findChannelByUid(it.uid)
-            if (channel != null) {
-                call.respond(channel)
-            } else {
-                call.respond(HttpStatusCode.NotFound)
-            }
+        val channel = channelUseCase.findChannelByUid(it.uid)
+        if (channel != null) {
+            call.respond(channel)
+        } else {
+            call.respond(HttpStatusCode.NotFound)
+        }
     }
 
     get<Channels.OwnerUid> {
-            val channel = channelUseCase.findChannelByOwner(it.ownerUid)
-            if (channel != null) {
-                call.respond(channel)
-            } else {
-                call.respond(HttpStatusCode.NotFound)
-            }
+        val channels = channelUseCase.findChannelsByOwner(it.ownerUid)
+        call.respond(channels)
     }
 
     post<Channels> {
         val channel = call.receive<ChannelDTO>()
         channelUseCase.createChannel(channel)?.let { responseChannel ->
-            call.respond(responseChannel)
+            call.respond(status = HttpStatusCode.Created, message = responseChannel)
+        }
+    }
+
+    delete<Channels.Uid> {
+        val deleted = channelUseCase.deleteChannel(it.uid)
+        if (deleted) {
+            call.respond(status = HttpStatusCode.OK, message = "Channel with uid ${it.uid} has been deleted")
+        } else {
+            call.respond(HttpStatusCode.NotFound)
         }
     }
 }
