@@ -4,8 +4,10 @@ import com.example.data.tables.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 // by using with(environment.config) we can get access to the application.conf configuration file
@@ -18,6 +20,9 @@ fun Application.configureDatabases() /* = with(environment.config) */ {
         )
     }
 }
+
+suspend fun <T> dbQuery(block: suspend () -> T): T =
+    newSuspendedTransaction(Dispatchers.IO) { block() }
 
 fun configureDataSource(embedded: Boolean): HikariDataSource = HikariDataSource(HikariConfig().apply {
     poolName = "Database pool"
@@ -39,41 +44,3 @@ fun configureDataSource(embedded: Boolean): HikariDataSource = HikariDataSource(
         jdbcUrl = System.getenv("POSTGRES_URL") //"jdbc:postgresql://localhost:5432/db_name" //
     }
 })
-
-
-//    val userService = UserService(database)
-//    routing {
-//        // Create user
-//        post("/users") {
-//            val user = call.receive<ExposedUser>()
-//            val id = userService.create(user)
-//            call.respond(HttpStatusCode.Created, id)
-//        }
-//
-//        // Read user
-//        get("/users/{id}") {
-//            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-//            val user = userService.read(id)
-//            if (user != null) {
-//                call.respond(HttpStatusCode.OK, user)
-//            } else {
-//                call.respond(HttpStatusCode.NotFound)
-//            }
-//        }
-//
-//        // Update user
-//        put("/users/{id}") {
-//            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-//            val user = call.receive<ExposedUser>()
-//            userService.update(id, user)
-//            call.respond(HttpStatusCode.OK)
-//        }
-//
-//        // Delete user
-//        delete("/users/{id}") {
-//            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-//            userService.delete(id)
-//            call.respond(HttpStatusCode.OK)
-//        }
-//    }
-//}

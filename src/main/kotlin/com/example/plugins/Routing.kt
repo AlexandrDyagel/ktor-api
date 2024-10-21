@@ -1,11 +1,14 @@
 package com.example.plugins
 
+import com.example.domain.repository.UserRepository
+import com.example.domain.usecase.UserUseCase
 import com.example.routing.userRouting
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 private const val API_URL = "api"
 private const val API_VERSION = "v1"
@@ -23,10 +26,12 @@ fun Application.configureRouting() {
         }
     }
 
+    val userRepository by inject<UserRepository>()
+
     routing {
         route(API_URL) {
             route(API_VERSION) {
-                userRouting()
+                userRouting(userRepository)
             }
         }
     }
