@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 class UserRepositoryImpl: UserRepository {
     override suspend fun findByUid(uid: Long): UserDTO? {
         return dbQuery {
-            UserTable.selectAll().where { UserTable.uid eq uid }.singleOrNull()?.toUserDTO()
+            UserTable.selectAll().where { UserTable.uid.eq(uid) }.singleOrNull()?.toUserDTO()
         }
     }
 
@@ -27,7 +27,7 @@ class UserRepositoryImpl: UserRepository {
 
     override suspend fun delete(uid: Long): Boolean {
         return dbQuery {
-            UserTable.deleteWhere { UserTable.uid eq uid } == 1
+            UserTable.deleteWhere { UserTable.uid.eq(uid) } == 1
         }
     }
 

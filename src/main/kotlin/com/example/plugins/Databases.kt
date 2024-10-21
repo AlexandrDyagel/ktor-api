@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.data.tables.ChannelTable
 import com.example.data.tables.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -16,7 +17,7 @@ fun Application.configureDatabases() /* = with(environment.config) */ {
 
     transaction(dataSource) {
         SchemaUtils.create(
-            UserTable
+            UserTable, ChannelTable
         )
     }
 }

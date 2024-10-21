@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import io.ktor.resources.*
 import kotlinx.serialization.Serializable
 
 @Serializable

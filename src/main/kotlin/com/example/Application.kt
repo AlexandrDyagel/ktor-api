@@ -10,6 +10,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureKoin()
     configureSerialization()
+    configureResources()
     configureDatabases()
     configureMonitoring()
     configureHTTP()
